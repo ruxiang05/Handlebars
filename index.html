@@ -3,93 +3,43 @@
   <head>
     <meta charset="utf-8">
     <title>Handlebars</title>
-    <style type='text/css'>
-      .redText{color:red}
-      .blueText{color:blue}
-      .greenText{color:green}
-    </style>
     <script src='handlebars-v4.0.5.js'></script>
   </head>
   <body>
 
-    <div id='quoteData'>
+    <div id='contentDiv'>
 
     </div>
 
-    <script id='quote-template' type='text/x-handlebars-template'>
-      <h3>
-        Favorite {{name}} Quotes
-      </h3>
-      <ol>
-        {{#each quotes}}
-        <li>
-          {{quote}}
-        </li>
-        {{/each}}
-      </ol>
-
-      {{{yogiBio}}}<br /><br />
-
-      {{makeLink "Yogi Berra Museum" 'http://yogiberramuseum.org/'}}<br /><br />
-
-      {{changeColor "Make my text red" color="red"}}<br /><br />
-
-      {{sayHello}}<br /><br />
+    <script id='the-template' type='text/x-handlebars-template'>
+      {{#makeRadio 'size'}}
+        Small
+        Medium
+        Large
+      {{/makeRadio}}
     </script>
     <script type='text/javascript'>
-      var quoteInfo=document.getElementById('quote-template').innerHTML;
-      var template =Handlebars.compile(quoteInfo);
+      var templateInfo = document.getElementById('the-template').innerHTML;
 
-      Handlebars.registerHelper('makeLink',function(text,url){
-        text=Handlebars.Utils.escapeExpression(text);
-        url=Handlebars.Utils.escapeExpression(url);
+      var template = Handlebars.compile(templateInfo);
 
-        var theLink='<a href="' + url + '">' + text + '</a>';
+      Handlebars.registerHelper('makeRadio',function(name, options){
+        var radioList = options.fn();
 
-        return new Handlebars.SafeString(theLink);
-      });
+        radioList = radioList.trim().split('\n');
 
-      Handlebars.registerHelper('changeColor', function(text, options){
-        text=Handlebars.Utils.escapeExpression(text);
-        if(options.hash.color == "red"){
-            return new Handlebars.SafeString("<span class='redText'>" + text + "</span>");
-        } else if(options.hash.color == 'blue'){
-            return new Handlebars.SafeString("<span class='blueText'>" + text + "</span>");
-        } else {
-            return new Handlebars.SafeString("<span class='greenText'>" + text + "</span>");
+        var output = '';
+
+        for(var val in radioList){
+          var item = radioList[val].trim();
+          output += '<input type="radio" name="' + name + '"value="' + item + '">'+ item + '<br />';
         }
+        return output;
       });
 
-      Handlebars.registerHelper('sayHello', function(options){
-        switch(options.data.lang){
-          case 'spanish':
-            return 'Hola';
-            break;
-          case 'french':
-            return 'Bonjour';
-            break;
-          default:return 'Hello';
+      var templateData = template({});
 
-        }
-      });
-
-      var quoteData=template({
-        name:'Yogi Berra',
-        quotes:[
-          {quote:'If you don\'t know where you are going, you might wind up someplace else.'},
-          {quote:'You better cut the pizza in four pieces because I\'m not hungry enougnt to eat six.'},
-          {quote:'I never said most of the things I said.'}
-        ],
-        yogiBio:'<em>Lawrence Peter "Yogi" Berra was an American professional baseball catcher, manager, and coach who played 19 seasons in Major League Baseball.</em>'
-      },
-      {data:{
-        lang:'spanish'
-      }}
-    );
-
-
-      document.getElementById('quoteData').innerHTML += quoteData;
-
+      document.getElementById('contentDiv').innerHTML += templateData;
     </script>
   </body>
 </html>
