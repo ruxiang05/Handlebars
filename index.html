@@ -33,6 +33,8 @@
       {{makeLink "Yogi Berra Museum" 'http://yogiberramuseum.org/'}}<br /><br />
 
       {{changeColor "Make my text red" color="red"}}<br /><br />
+
+      {{sayHello}}<br /><br />
     </script>
     <script type='text/javascript'>
       var quoteInfo=document.getElementById('quote-template').innerHTML;
@@ -58,6 +60,19 @@
         }
       });
 
+      Handlebars.registerHelper('sayHello', function(options){
+        switch(options.data.lang){
+          case 'spanish':
+            return 'Hola';
+            break;
+          case 'french':
+            return 'Bonjour';
+            break;
+          default:return 'Hello';
+
+        }
+      });
+
       var quoteData=template({
         name:'Yogi Berra',
         quotes:[
@@ -66,7 +81,11 @@
           {quote:'I never said most of the things I said.'}
         ],
         yogiBio:'<em>Lawrence Peter "Yogi" Berra was an American professional baseball catcher, manager, and coach who played 19 seasons in Major League Baseball.</em>'
-      });
+      },
+      {data:{
+        lang:'spanish'
+      }}
+    );
 
 
       document.getElementById('quoteData').innerHTML += quoteData;
