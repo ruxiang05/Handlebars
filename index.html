@@ -29,10 +29,35 @@
       </ol>
 
       {{{yogiBio}}}<br /><br />
+
+      {{makeLink "Yogi Berra Museum" 'http://yogiberramuseum.org/'}}<br /><br />
+
+      {{changeColor "Make my text red" color="red"}}<br /><br />
     </script>
     <script type='text/javascript'>
       var quoteInfo=document.getElementById('quote-template').innerHTML;
       var template =Handlebars.compile(quoteInfo);
+
+      Handlebars.registerHelper('makeLink',function(text,url){
+        text=Handlebars.Utils.escapeExpression(text);
+        url=Handlebars.Utils.escapeExpression(url);
+
+        var theLink='<a href="' + url + '">' + text + '</a>';
+
+        return new Handlebars.SafeString(theLink);
+      });
+
+      Handlebars.registerHelper('changeColor', function(text, options){
+        text=Handlebars.Utils.escapeExpression(text);
+        if(options.hash.color == "red"){
+            return new Handlebars.SafeString("<span class='redText'>" + text + "</span>");
+        } else if(options.hash.color == 'blue'){
+            return new Handlebars.SafeString("<span class='blueText'>" + text + "</span>");
+        } else {
+            return new Handlebars.SafeString("<span class='greenText'>" + text + "</span>");
+        }
+      });
+
       var quoteData=template({
         name:'Yogi Berra',
         quotes:[
@@ -42,6 +67,7 @@
         ],
         yogiBio:'<em>Lawrence Peter "Yogi" Berra was an American professional baseball catcher, manager, and coach who played 19 seasons in Major League Baseball.</em>'
       });
+
 
       document.getElementById('quoteData').innerHTML += quoteData;
 
