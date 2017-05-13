@@ -22,7 +22,13 @@
         Numbers are equal
       {{else}}
         Numbers are not equal
-      {{/areEqual}}<br />
+      {{/areEqual}}<br /><br />
+
+      {{#if 'isActive'}}
+        <img src='logo.png' alt='Active'/>
+      {{else}}
+        <img src='notlogo.png' alt='Inactive' />
+      {{/if }}<br />
     </script>
     <script type='text/javascript'>
       var templateInfo = document.getElementById('the-template').innerHTML;
@@ -50,6 +56,14 @@
           return options.inverse(this);
         }
       });
+
+      Handlebars.registerHelper('if', function(data, options){
+        if(data == 'isActive'){
+          return options.fn(this);
+        } else {
+          return options.inverse(this);
+        }
+      })
 
       var templateData = template({});
 
