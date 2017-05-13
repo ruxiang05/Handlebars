@@ -3,17 +3,44 @@
   <head>
     <meta charset="utf-8">
     <title>Handlebars</title>
+    <style type='text/css'>
+      .redText{color:red}
+      .blueText{color:blue}
+      .greenText{color:green}
+    </style>
     <script src='handlebars-v4.0.5.js'></script>
   </head>
   <body>
-    <div id='ruxiData'>
+
+    <div id='quoteData'>
 
     </div>
+
+    <script id='quote-template' type='text/x-handlebars-template'>
+      <h3>
+        Favorite {{name}} Quotes
+      </h3>
+      <ol>
+        {{#each quotes}}
+        <li>
+          {{quote}}
+        </li>
+        {{/each}}
+      </ol>
+    </script>
     <script type='text/javascript'>
-      var myInfo='<p>My name is {{name}} and I live at {{street}} in {{city}},{{country}}</p>'
-      var template = Handlebars.compile(myInfo);
-      var data = template({name:'Ruxi',street:'10 Greenwich',city:'London',country:'UK'});
-      document.getElementById('ruxiData').innerHTML += data;
+      var quoteInfo=document.getElementById('quote-template').innerHTML;
+      var template =Handlebars.compile(quoteInfo);
+      var quoteData=template({
+        name:'Yogi Berra',
+        quotes:[
+          {quote:'If you don\'t know where you are going, you might wind up someplace else.'},
+          {quote:'You better cut the pizza in four pieces because I\'m not hungry enougnt to eat six.'},
+          {quote:'I never said most of the things I said.'}
+        ]
+      });
+
+      document.getElementById('quoteData').innerHTML += quoteData;
     </script>
   </body>
 </html>
