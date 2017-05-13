@@ -16,7 +16,13 @@
         Small
         Medium
         Large
-      {{/makeRadio}}
+      {{/makeRadio}}<br />
+
+      {{#areEqual 1 2}}
+        Numbers are equal
+      {{else}}
+        Numbers are not equal
+      {{/areEqual}}<br />
     </script>
     <script type='text/javascript'>
       var templateInfo = document.getElementById('the-template').innerHTML;
@@ -35,6 +41,14 @@
           output += '<input type="radio" name="' + name + '"value="' + item + '">'+ item + '<br />';
         }
         return output;
+      });
+
+      Handlebars.registerHelper('areEqual', function(num1,num2,options){
+        if(num1 === num2){
+          return options.fn(this);
+        } else {
+          return options.inverse(this);
+        }
       });
 
       var templateData = template({});
