@@ -12,62 +12,38 @@
     </div>
 
     <script id='the-template' type='text/x-handlebars-template'>
-      {{#makeRadio 'size'}}
-        Small
-        Medium
-        Large
-      {{/makeRadio}}<br />
 
-      {{#areEqual 1 2}}
-        Numbers are equal
-      {{else}}
-        Numbers are not equal
-      {{/areEqual}}<br /><br />
-
-      {{#if 'isActive'}}
-        <img src='logo.png' alt='Active'/>
-      {{else}}
-        <img src='notlogo.png' alt='Inactive' />
-      {{/if }}<br />
+      <div class='potter-1'>
+        <h3>{{title}}</h3>
+        {{#with techData}}
+          <div class='isbn'>
+            {{{isbn}}}
+          </div>
+          <div class='author'>
+            {{{author}}}
+          </div>
+        {{/with}}
+      </div>
     </script>
     <script type='text/javascript'>
+
       var templateInfo = document.getElementById('the-template').innerHTML;
 
       var template = Handlebars.compile(templateInfo);
 
-      Handlebars.registerHelper('makeRadio',function(name, options){
-        var radioList = options.fn();
-
-        radioList = radioList.trim().split('\n');
-
-        var output = '';
-
-        for(var val in radioList){
-          var item = radioList[val].trim();
-          output += '<input type="radio" name="' + name + '"value="' + item + '">'+ item + '<br />';
-        }
-        return output;
+      Handlebars.registerHelper('with', function(context,options){
+        return options.fn(context);
       });
 
-      Handlebars.registerHelper('areEqual', function(num1,num2,options){
-        if(num1 === num2){
-          return options.fn(this);
-        } else {
-          return options.inverse(this);
+      var templateData = template({
+        title:'Harry Potter and the Philosopher\'s stone',
+        techData:{
+          isbn:'0-7475-3269-9',
+          author:'J.K.Rowling'
         }
       });
 
-      Handlebars.registerHelper('if', function(data, options){
-        if(data == 'isActive'){
-          return options.fn(this);
-        } else {
-          return options.inverse(this);
-        }
-      })
-
-      var templateData = template({});
-
-      document.getElementById('contentDiv').innerHTML += templateData;
+      document.getElementById('content-div').innerHTML += templateData;
     </script>
   </body>
 </html>
